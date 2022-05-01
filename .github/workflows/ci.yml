@@ -14,6 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Create docker network
+      working-directory: ./aplicacao
+      run: docker network create network-api
     - name: Build the Docker image
       working-directory: ./aplicacao
       run: docker-compose up -d
