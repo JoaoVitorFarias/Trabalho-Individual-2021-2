@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       working-directory: ./aplicacao
-      run: docker-composer up -d
+      run: docker-compose up -d
 
   test:
 
@@ -24,6 +24,9 @@ jobs:
   
     steps:
       - uses: actions/checkout@v3
+      - name: Create docker network
+        working-directory: ./aplicacao
+        run: docker network create network-api
       - name: Run tests
         working-directory: ./aplicacao
         run: docker-compose run api bash -c "rails db:reset; rspec"
@@ -34,6 +37,9 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
-      - name: Run tests
+      - name: Create docker network
+        working-directory: ./aplicacao
+        run: docker network create network-api
+      - name: Run lint
         working-directory: ./aplicacao
         run: docker-compose run api bash -c "gem install rubocop; rubocop -A --fail-level F"
